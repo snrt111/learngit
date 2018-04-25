@@ -14,3 +14,10 @@ d3187c743cdb80f1786112e48c07052f10733bdb write a readme file
 
 
 ======================================================================
+查看文件内容：cat readme.txt
+添加文件：git add readme.txt
+提交文件到版本库：git commit -m "append GPL"
+后悔时使用：git reflog 
+按版本号回退：git reset --hard 3628164
+回退到上一个版本：git reset --hard HEAD^
+显示提交记录：git log --pretty=oneline
