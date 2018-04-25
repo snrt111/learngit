@@ -21,3 +21,4 @@ d3187c743cdb80f1786112e48c07052f10733bdb write a readme file
 按版本号回退：git reset --hard 3628164
 回退到上一个版本：git reset --hard HEAD^
 显示提交记录：git log --pretty=oneline
+查看工作区和版本库里面最新版本的区别：git diff HEAD -- readme.txt
