@@ -1,0 +1,92 @@
+初始化仓库（在当前目录下）： git init
+查看文件内容：cat readme.txt
+添加文件到版本库：git add readme.txt
+添加多个文件到版本库：$ git add file2.txt file3.txt
+提交文件到版本库：git commit -m "append GPL"
+查看版本库状态：$ git status
+查看修改内容：$ git diff readme.txt 
+查看提交记录：$ git log
+后悔时使用：git reflog 
+按版本号回退：git reset --hard 3628164
+回退到上一个版本：git reset --hard HEAD^   
+上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100
+查看文件内容：$ cat readme.txt
+显示提交记录：git log --pretty=oneline
+查看工作区和版本库里面最新版本的区别：git diff HEAD -- readme.txt
+撤销命令（让这个文件回到最近一次git commit或git add时的状态）：git checkout -- readme.txt
+删除文件：$ rm test.txt 
+从版本库中删除：$ git rm test.txt 并commit
+禁用Fast forward ：  $ git merge --no-ff -m "merge with no-ff" dev
+
+生成SSHKey：$ ssh-keygen -t rsa -C "youremail@example.com"
+把本地仓库和github仓库关联：$ git remote add origin git@github.com:snrt111/learngit.git
+把本地仓库推送到github仓库：$ git push -u origin master 第一次，非第一次：git push origin master
+从github克隆项目到本地：$ git clone git@github.com:snrt111/gitskills.git
+
+
+
+查看分支：git branch
+创建分支：git branch <name>
+切换分支：git checkout <name>
+创建+切换分支：git checkout -b <name>
+合并某分支到当前分支：git merge <name>
+删除分支：git branch -d <name>
+查看分支合并情况：$ git log --graph --pretty=oneline --abbrev-commit
+禁用Fast forward合并：$ git merge --no-ff -m "merge with no-ff" dev
+工作现场“储藏”：$ git stash
+工作现场查看：$ git stash list
+现场恢复：git stash apply + git stash drop ==git stash pop 
+强行删除分支：$ git branch -d <name>
+
+问题修改处理逻辑：
+1、保存现场
+    $ git stash
+2、确定要在哪个分支上修复bug，假定需要在master分支上修复，就从master创建临时分支：
+    $ git checkout master 
+    $ git checkout -b issue-101
+3、修复bug
+    $ git add readme.txt 
+    $ git commit -m "fix bug 101"
+
+4、修复完成后，切换到master分支，并完成合并，最后删除issue-101分支：
+    $ git checkout master
+    $ git merge --no-ff -m "merged bug fix 101" issue-101
+    $ git branch -d issue-101
+5、回到dev分支干活了！
+    $ git checkout dev
+    
+查看远程库的信息:$ git remote   (git remote -v显示更详细)
+
+多人协作：
+创建远程origin的dev分支到本地:$ git checkout -b dev origin/dev
+A:提交文件：
+B：提交文件失败：
+    1、$ git pull 失败（没有指定本地dev分支与远程origin/dev分支的链接）
+    2、设置dev和origin/dev的链接：$ git branch --set-upstream dev origin/dev
+    3、再$ git pull
+    
+    查看远程库信息，使用git remote -v；
+    本地新建的分支如果不推送到远程，对其他人就是不可见的；
+    从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+    在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+    建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+    从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+    
+打标签：$ git tag v1.0 （切换到当前分支）
+查看所有标签：$ git tag
+给历史提交打标签：
+    1、$ git log --pretty=oneline --abbrev-commit
+    2、$ git tag v0.9 6224937  （v0.9为标签名；6224937为历史ID号）
+查看标签信息：$ git show v0.9
+创建带有说明的标签，用-a指定标签名，-m指定说明文字：$ git tag -a v0.1 -m "version 0.1 released" 3628164
+用私钥签名一个标签：：$ git tag -s v0.2 -m "signed version 0.2 released" fec145a
+              （签名采用PGP签名，因此，必须首先安装gpg（GnuPG），如果没有找到gpg，或者没有gpg密钥对，就会报错：）
+删除标签：$ git tag -d v0.1
+推送某个标签到远程：git push origin <tagname>
+一次性推送全部尚未推送到远程的本地标签：$ git push origin --tags
+
+删除远程标签：
+    1、本地删除：git tag -d <tagname>
+    2、远程删除：git push origin :refs/tags/<tagname>
+
+
